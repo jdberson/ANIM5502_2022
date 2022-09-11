@@ -9,7 +9,7 @@ execute:
 website: 
   page-navigation: true
   title: "ANIM5502 2022 Data analyses" 
-  site-url: "https://jdberson.github.io/ANIM5502_2022" 
+  site-url: "https://jdberson.github.io/ANIM5502_2022/"
   repo-url: https://github.com/jdberson/ANIM5502_2022 
   repo-actions: [issue]
   
