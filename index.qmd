@@ -14,4 +14,4 @@ Code from each section can be copied using the clipboard symbol on the right of 
 print("Success - too easy to copy and paste code")
 ```
 
-Also, did you happen to hover over 'print' in the above code? If not try it - clicking on a function name will take you to its online help page. 
+Also, did you happen to hover over 'print' in the above code? If not try it - clicking on a function name will take you to its online help page.
