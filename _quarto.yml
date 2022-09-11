@@ -25,9 +25,9 @@ website:
       - icon: github
         menu: 
           - text: Source code
-            url: https://code.com
+            url: https://github.com/jdberson/ANIM5502_2022
           - text: Report a bug
-            url: https://bugs.com
+            url: https://github.com/jdberson/ANIM5502_2022/issues
     contents: 
       - href: index.qmd
         text: Welcome
