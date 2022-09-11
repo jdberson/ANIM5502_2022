@@ -1,0 +1,18 @@
+{
+  "hash": "a9f19c607fbf85a8bc1ab02402c0d2b2",
+  "result": {
+    "markdown": "---\ntitle: \"Data cleaning\"\n---\n\n\n## Setup\n\nFirst we need to load the packages we well be using.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"tidyverse\")\nlibrary(\"readxl\")\nlibrary(\"janitor\")\n```\n:::\n\n\n\n## Import and clean data\n\nNow we are ready to import the data to R and clean it up!\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndb_data <- \n  \n  # Use the readxl package to load the data directly from Excel\n  read_xlsx(\"data/CSIRO quarantine project data.xlsx\", \n            sheet = \"Group data\", na = c(\"\", \"N/A\", \"NA\")) %>%\n  \n  # Use the janitor package to make the column headings more R friendly\n  clean_names() %>%\n  \n  # Filter rows with all missing values\n  filter(is.na(notes) | notes != \"Missing\") %>%\n  \n  # Change columns to numeric\n  mutate(across(pronotum_length:head_horn, as.numeric)) %>%\n  \n  # Create a new group_id term for joining with vial info - note this is hacky!\n  # Note the third line - this is necessary to add in the leading zeros where\n  # they are missing\n  mutate(id_new = id, .after = id) %>%\n  separate(id_new, into = c(\"pop\", \"sex1\", \"individual\")) %>%\n  mutate(pop = sprintf(\"%02d\", as.integer(pop))) %>%\n  unite(\"group_id\", pop, sex1, sep = \"_\") %>%\n  select(-individual) %>%\n  \n  # Rename species and sex columns so that we can check these against vial info\n  rename(sex_data = sex, species_data = species) %>%\n  \n  # Combine with the 'Vial info' worksheet\n  left_join(\n    \n    # Load and clean 'Vial info' sheet\n    read_xlsx(\"data/CSIRO quarantine project data.xlsx\", \n              sheet = \"Vial info\") %>%\n      clean_names()%>%\n      drop_na(id) %>%\n      select(-x8, -horn_priorities) %>%\n      rename(sex_vial = sex, species_vial = species) %>%\n      separate(id, into = c(\"pop\", \"sex1\")) %>%\n      mutate(pop = sprintf(\"%02d\", as.integer(pop))) %>%\n      unite(\"group_id\", pop, sex1, sep = \"_\"),\n    \n    # The 'by' argument tells left_join() which variable to use for joining\n    by = \"group_id\"\n    \n  ) %>%\n  \n  # Move the information about the individuals to the start of the tibble\n  relocate(group_id, species_vial, species_data, shipment, generation, \n           treatment, sex_vial, sex_data, .after = id) %>%\n  \n  # Change generation to an integer - need to remove the 'f'\n  mutate(generation = as.integer(str_remove(generation, \"F\"))) %>%\n  \n  # Species and sex information in group data sheet appear incorrect for some\n  # records\n  rename(species = species_vial, sex = sex_vial) %>%\n  select(-c(species_data, sex_data)) %>%\n  \n  # Change the treatment assignment of generation 0 beetles to 'P' for parental.\n  mutate(treatment = if_else(generation == 0, \"P\", treatment))\n```\n:::\n\n\nThat took a lot of code just to import and clean the data!\n\nThis provides an important lesson - we could have saved ourselves some effort cleaning the data by setting more guidelines around data entry.\n\n## Save the cleaned data\n\nLet's save the clean data in a new file.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nwrite_csv(db_data, \"data/db_data.csv\")\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\r\n<script src=\"../site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\r\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

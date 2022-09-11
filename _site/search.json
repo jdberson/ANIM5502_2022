@@ -1,0 +1,93 @@
+[
+  {
+    "objectID": "dung_beetles/dung_beetles_data_cleaning.html",
+    "href": "dung_beetles/dung_beetles_data_cleaning.html",
+    "title": "Data cleaning",
+    "section": "",
+    "text": "First we need to load the packages we well be using.\n\nlibrary(\"tidyverse\")\nlibrary(\"readxl\")\nlibrary(\"janitor\")"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_cleaning.html#import-and-clean-data",
+    "href": "dung_beetles/dung_beetles_data_cleaning.html#import-and-clean-data",
+    "title": "Data cleaning",
+    "section": "Import and clean data",
+    "text": "Import and clean data\nNow we are ready to import the data to R and clean it up!\n\ndb_data <- \n  \n  # Use the readxl package to load the data directly from Excel\n  read_xlsx(\"data/CSIRO quarantine project data.xlsx\", \n            sheet = \"Group data\", na = c(\"\", \"N/A\", \"NA\")) %>%\n  \n  # Use the janitor package to make the column headings more R friendly\n  clean_names() %>%\n  \n  # Filter rows with all missing values\n  filter(is.na(notes) | notes != \"Missing\") %>%\n  \n  # Change columns to numeric\n  mutate(across(pronotum_length:head_horn, as.numeric)) %>%\n  \n  # Create a new group_id term for joining with vial info - note this is hacky!\n  # Note the third line - this is necessary to add in the leading zeros where\n  # they are missing\n  mutate(id_new = id, .after = id) %>%\n  separate(id_new, into = c(\"pop\", \"sex1\", \"individual\")) %>%\n  mutate(pop = sprintf(\"%02d\", as.integer(pop))) %>%\n  unite(\"group_id\", pop, sex1, sep = \"_\") %>%\n  select(-individual) %>%\n  \n  # Rename species and sex columns so that we can check these against vial info\n  rename(sex_data = sex, species_data = species) %>%\n  \n  # Combine with the 'Vial info' worksheet\n  left_join(\n    \n    # Load and clean 'Vial info' sheet\n    read_xlsx(\"data/CSIRO quarantine project data.xlsx\", \n              sheet = \"Vial info\") %>%\n      clean_names()%>%\n      drop_na(id) %>%\n      select(-x8, -horn_priorities) %>%\n      rename(sex_vial = sex, species_vial = species) %>%\n      separate(id, into = c(\"pop\", \"sex1\")) %>%\n      mutate(pop = sprintf(\"%02d\", as.integer(pop))) %>%\n      unite(\"group_id\", pop, sex1, sep = \"_\"),\n    \n    # The 'by' argument tells left_join() which variable to use for joining\n    by = \"group_id\"\n    \n  ) %>%\n  \n  # Move the information about the individuals to the start of the tibble\n  relocate(group_id, species_vial, species_data, shipment, generation, \n           treatment, sex_vial, sex_data, .after = id) %>%\n  \n  # Change generation to an integer - need to remove the 'f'\n  mutate(generation = as.integer(str_remove(generation, \"F\"))) %>%\n  \n  # Species and sex information in group data sheet appear incorrect for some\n  # records\n  rename(species = species_vial, sex = sex_vial) %>%\n  select(-c(species_data, sex_data)) %>%\n  \n  # Change the treatment assignment of generation 0 beetles to 'P' for parental.\n  mutate(treatment = if_else(generation == 0, \"P\", treatment))\n\nThat took a lot of code just to import and clean the data!\nThis provides an important lesson - we could have saved ourselves some effort cleaning the data by setting more guidelines around data entry."
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_cleaning.html#save-the-cleaned-data",
+    "href": "dung_beetles/dung_beetles_data_cleaning.html#save-the-cleaned-data",
+    "title": "Data cleaning",
+    "section": "Save the cleaned data",
+    "text": "Save the cleaned data\nLet’s save the clean data in a new file.\n\nwrite_csv(db_data, \"data/db_data.csv\")"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_exploration.html",
+    "href": "dung_beetles/dung_beetles_data_exploration.html",
+    "title": "Data exploration",
+    "section": "",
+    "text": "As before we need to load the packages we will use.\n\nlibrary(\"tidyverse\")\nlibrary(\"GGally\")\n\nWe will also set the ggplot theme for all plots.\n\ntheme_set(theme_minimal())\ntheme_update(strip.text = element_text(face = \"bold\", size=10, hjust=0), \n             strip.background = element_rect(fill = \"grey80\", colour = NA),\n             axis.text = element_text(size=10, colour = \"black\"),\n             axis.title = element_text(size=12, colour = \"black\"))"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_exploration.html#load-and-view-the-data",
+    "href": "dung_beetles/dung_beetles_data_exploration.html#load-and-view-the-data",
+    "title": "Data exploration",
+    "section": "Load and view the data",
+    "text": "Load and view the data\nNow let’s load and inspect our clean data file.\n\n# Read in the data\ndb_data <- read_csv(\"data/db_data.csv\")\n\n# Look at the data (in RStudio you could use View(db_data))\ndb_data\n\n\n\n  \n\n\n\nFrom the data frame we can see that we have 1352 observations.\nThat’s helpful, but we would really like to know how many observations per species/shipment/generation/sex combination.\nGiven that not all individuals could have each trait measured, it may also be helpful to look at this information, particularly for horns given that this is the trait with the least measurements."
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_exploration.html#sample-size-information",
+    "href": "dung_beetles/dung_beetles_data_exploration.html#sample-size-information",
+    "title": "Data exploration",
+    "section": "Sample size information",
+    "text": "Sample size information\n\n# Total individuals in each species/sex/generation/shipment/generation\n# combination\ntotal_n <- \n  db_data %>%\n  group_by(species, sex, generation, shipment, treatment) %>%\n  count()\n\ntotal_n\n\n\n\n  \n\n\n\nI find it difficult to get a quick overview of this information from a table. Plotting it in a figure can help.\n\nggplot(data = total_n, aes(x = generation, y = n, colour = treatment, shape = sex)) +\n  geom_point(position = position_dodge(0.3)) +\n  geom_line(position = position_dodge(0.3)) +\n  facet_wrap(~species*shipment)\n\n\n\n\nIt’s a little more convoluted to get the the sample sizes separately for each trait.\n\n# In total\ntotal_n_by_trait <- \ndb_data %>%\n  pivot_longer(pronotum_width:head_horn, names_to = \"response\") %>%\n  drop_na(value) %>%\n  group_by(response) %>%\n  count() %>%\n  pivot_wider(names_from = response, values_from = n)\n\ntotal_n_by_trait\n\n\n\n  \n\n\n# For each species/sex/generation/shipment/generation combination\ntotal_n_group_by_trait <- \ndb_data %>%\n  pivot_longer(pronotum_width:head_horn, names_to = \"response\") %>%\n  drop_na(value) %>%\n  group_by(species, sex, generation, shipment, treatment, response) %>% \n  count() %>%\n  pivot_wider(names_from = response, values_from = n, names_prefix = \"n_\")\n\ntotal_n_group_by_trait\n\n\n\n  \n\n\n\nLet’s visualise the sample size by group for horns\n\nggplot(data = total_n_group_by_trait %>% drop_na(n_head_horn), \n       aes(x = generation, y = n_head_horn, colour = treatment, shape = sex)) +\n  geom_point(position = position_dodge(0.3)) +\n  geom_line(position = position_dodge(0.3)) +\n  facet_wrap(~species*shipment)"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_exploration.html#pairs-plots",
+    "href": "dung_beetles/dung_beetles_data_exploration.html#pairs-plots",
+    "title": "Data exploration",
+    "section": "Pairs plots",
+    "text": "Pairs plots\nI often find it very useful to visualise the correlations among traits. This can be great for detecting outliers, and for getting a better understanding about the distribution of the data.\nThe following code will produce a series of pairs plots, separated by different groupings.\n\n# Highlight differences between the species\nggpairs(db_data, columns = 8:14, aes(colour = species, alpha = 0.5))\n\n\n\n# Highlight differences between the sexes\nggpairs(db_data, columns = 8:14, aes(colour = sex, alpha = 0.5))\n\n\n\n# Look at vacca only\nggpairs(db_data %>% filter(species == \"Onthophagus vacca\"), \n        columns = 8:14, aes(colour = sex, alpha = 0.5))\n\n\n\n# Look at andalusicus only\nggpairs(db_data %>% filter(species == \"Onthophagus andalusicus\"), \n        columns = 8:14, aes(colour = sex, alpha = 0.5))"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_exploration.html#prepare-for-modelling",
+    "href": "dung_beetles/dung_beetles_data_exploration.html#prepare-for-modelling",
+    "title": "Data exploration",
+    "section": "Prepare for modelling",
+    "text": "Prepare for modelling\nIn my view, it can be very helpful to plot the data to show the relationships that we are predicting to detect.\nIt’s important not to go on a fishing expedition here but instead focus on investigating our hypotheses.\nFor example, we are interested in how body size (pronotum width) was affected by the beetles being within/out of quarantine, and how this may have changed over the generations.\n\nggplot(data = db_data, aes(x = generation, y = pronotum_width, colour = treatment, shape = sex)) +\n  geom_jitter() +\n  facet_wrap(~species*shipment)\n\n\n\n\nThink about what this figure is showing us. Does each ‘shipment’ show a similar or different pattern? Can we test for a treatment effect over the generations using all shipments?\nNow that we’ve gotten more familiar with our data - let’s get modelling!"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_modelling.html",
+    "href": "dung_beetles/dung_beetles_data_modelling.html",
+    "title": "Data modelling",
+    "section": "",
+    "text": "Here we load the packages, set the ggplot theme and load the data.\n\nlibrary(\"tidyverse\")\nlibrary(\"broom\")\nlibrary(\"emmeans\")\n\nSet the ggplot theme for all plots.\n\ntheme_set(theme_minimal())\ntheme_update(strip.text = element_text(face = \"bold\", size=10, hjust=0), \n             strip.background = element_rect(fill = \"grey80\", colour = NA),\n             axis.text = element_text(size=10, colour = \"black\"),\n             axis.title = element_text(size=12, colour = \"black\"))\n\nImport the data.\n\n# Read in the data\ndb_data <- \n  read_csv(\"data/db_data.csv\") %>%\n  \n  # Some R packages require factors to be explicit\n  mutate(across(.cols = c(id:shipment, treatment:sex), as.factor))"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_modelling.html#hypothesis-1",
+    "href": "dung_beetles/dung_beetles_data_modelling.html#hypothesis-1",
+    "title": "Data modelling",
+    "section": "Hypothesis #1",
+    "text": "Hypothesis #1\nFirst we want to know whether the treatment had an immediate effect on beetle morphology, and whether this effect differed for the two species.\nRecall from our data exploration that two of the Onthophagus vacca shipments did not have both treatments. We will filter these out for our analysis, as well as generations other than the first generation.\n\n# Filter data\ndb_data_F1 <-\n  db_data %>%\n              filter(generation == 1 &\n                     !shipment %in% c(\"5A\", \"5B\")) %>%\n  droplevels()\n\n# Check sample sizes\ndb_data_F1 %>%\n  drop_na(pronotum_width) %>%\n  group_by(treatment, sex, shipment, species) %>%\n  count()\n\n\n\n  \n\n\n# Fit the model\nm1a_pw <- lm(pronotum_width ~ treatment*species + sex, data = db_data_F1)\n\n# Check model conditions\npar(mfrow = c(2,2)); plot(m1a_pw); par(mfrow = c(1,1))\n\n\n\n# Can look at a histogram of the residuals\nggplot(data = augment(m1a_pw), aes(x = .resid)) +\n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n# Model results\ntidy(m1a_pw)\n\n\n\n  \n\n\n\nThere is no strong evidence for an interaction effect. I think it’s reasonable to simplify the model and drop the interaction.\n\n# Fit the model\nm1b_pw <- lm(pronotum_width ~ treatment + species + sex, data = db_data_F1)\n\n# Check model conditions\npar(mfrow = c(2,2)); plot(m1b_pw); par(mfrow = c(1,1))\n\n\n\n# Can look at a histogram of the residuals\nggplot(data = augment(m1b_pw), aes(x = .resid)) +\n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n# Model results\n\n# Using the broom package\ntidy(m1b_pw)\n\n\n\n  \n\n\nglance(m1b_pw)\n\n\n\n  \n\n\n# Using summary\nsummary(m1b_pw)\n\n\nCall:\nlm(formula = pronotum_width ~ treatment + species + sex, data = db_data_F1)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.86592 -0.30946  0.08434  0.37429  1.39130 \n\nCoefficients:\n                         Estimate Std. Error t value Pr(>|t|)    \n(Intercept)               4.47893    0.06542  68.466   <2e-16 ***\ntreatmentQ                0.65670    0.06640   9.889   <2e-16 ***\nspeciesOnthophagus vacca  0.11976    0.06687   1.791   0.0742 .  \nsexM                     -0.05947    0.06602  -0.901   0.3684    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.5916 on 318 degrees of freedom\nMultiple R-squared:  0.2523,    Adjusted R-squared:  0.2452 \nF-statistic: 35.77 on 3 and 318 DF,  p-value: < 2.2e-16\n\n\nWe have evidence for a treatment effect and some coefficients to help us understand what the effect is. The emmeans package can help us out a bit more here.\n\nm1b_pw_emm <- emmeans(m1b_pw, \"treatment\")\nm1b_pw_emm\n\n treatment emmean     SE  df lower.CL upper.CL\n CT          4.51 0.0468 318     4.42     4.60\n Q           5.17 0.0471 318     5.07     5.26\n\nResults are averaged over the levels of: species, sex \nConfidence level used: 0.95 \n\n\nLet’s plot the results with our raw data - this is a great sanity check to make sure something has not gone horribly wrong!\n\n# Notice the use of tidy() from the broom package\nggplot(data = tidy(m1b_pw_emm, conf.int = TRUE), aes(x = treatment, y = estimate, colour = treatment, shape = treatment)) +\n  geom_point(size = 4) +\n geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0) + \n  geom_jitter(data = db_data_F1, aes(x = treatment, y = pronotum_width, colour = treatment), alpha = 0.2)"
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_data_modelling.html#hypothesis-2",
+    "href": "dung_beetles/dung_beetles_data_modelling.html#hypothesis-2",
+    "title": "Data modelling",
+    "section": "Hypothesis #2",
+    "text": "Hypothesis #2\nNow let’s investigate whether this effect persists across the generations.\nRecall that our most complete data is for Onthophagus vacca shipments 2 and 4 up to generation 3. Let’s use just this data for this hypothesis for now.\n\n# Filter data\ndb_data_F1_3 <-\n  db_data %>%\n              filter(generation %in% c(1, 2, 3) &\n                     shipment %in% c(\"2\", \"4\")) %>%\n  droplevels()\n\n# Check sample sizes\ndb_data_F1_3 %>%\n  drop_na(pronotum_width) %>%\n  group_by(treatment, generation, sex, shipment) %>%\n  count() \n\n\n\n  \n\n\n# Fit the model\nm2a_pw <- lm(pronotum_width ~ treatment*generation*shipment, data = db_data_F1_3)\n\n# Check model conditions\npar(mfrow = c(2,2)); plot(m2a_pw); par(mfrow = c(1,1))\n\n\n\n# Can look at a histogram of the residuals\nggplot(data = augment(m2a_pw), aes(x = .resid)) +\n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n# Model results\ntidy(m2a_pw)\n\n\n\n  \n\n\nglance(m2a_pw)\n\n\n\n  \n\n\nsummary(m2a_pw)\n\n\nCall:\nlm(formula = pronotum_width ~ treatment * generation * shipment, \n    data = db_data_F1_3)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-2.2894 -0.2940  0.0632  0.3588  1.2262 \n\nCoefficients:\n                                Estimate Std. Error t value Pr(>|t|)    \n(Intercept)                      4.84076    0.14500  33.384  < 2e-16 ***\ntreatmentQ                       1.01100    0.17780   5.686 2.25e-08 ***\ngeneration                      -0.07697    0.06485  -1.187    0.236    \nshipment4                       -0.94150    0.18597  -5.063 5.89e-07 ***\ntreatmentQ:generation           -0.37419    0.08578  -4.362 1.58e-05 ***\ntreatmentQ:shipment4            -1.60767    0.27244  -5.901 6.81e-09 ***\ngeneration:shipment4             0.47887    0.08432   5.679 2.35e-08 ***\ntreatmentQ:generation:shipment4  0.64997    0.12447   5.222 2.64e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.539 on 482 degrees of freedom\nMultiple R-squared:  0.3541,    Adjusted R-squared:  0.3448 \nF-statistic: 37.76 on 7 and 482 DF,  p-value: < 2.2e-16\n\n\nLet’s plot the results with the raw data.\n\nggplot(data = augment(m2a_pw, se_fit = TRUE), \n       aes(x = generation, y = .fitted, colour = treatment)) +\n  geom_line() +\n  geom_ribbon(aes(ymin = .fitted - .se.fit, ymax = .fitted + .se.fit), \n              alpha = 0.2) +\n  geom_jitter(aes(x = generation, y = pronotum_width, colour = treatment), alpha = 0.2) +\n facet_wrap(~shipment)\n\n\n\n\nThis does not look like a great fit, particularly for shipment 2.\nGiven the shipment 2 behaves differently to all the other shipments, I suggest we do some thorough checks of the data before pursuing more complex models.\nI’ll end it here for now - we can extend/update the analyses at our next meeting."
+  },
+  {
+    "objectID": "dung_beetles/dung_beetles_index.html",
+    "href": "dung_beetles/dung_beetles_index.html",
+    "title": "Dung beetles",
+    "section": "",
+    "text": "Check through the pages carefully, run the analyses yourself, and come to the next meeting ready with questions!\nNote the figures and tables are generally in a rough and raw state. This reflects the iterative way I tend to work - produce a table/figure using (mostly) default settings and then improve it from there. I’m happy to chat about what needs to be done to improve presentation but I will leave it to each individual to produce their final results.\nYou will see that I’ve structured the data analysis in three parts - data cleaning, data exploration and data modelling. I’ve used pronotum width and a couple of hypotheses as examples that can be extended / modified."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.\nCode from each section can be copied using the clipboard symbol on the right of each ‘code block’ (the grey boxes). You can try this below.\n\nprint(\"Success - too easy to copy and paste code\")\n\nAlso, did you happen to hover over ‘print’ in the above code? If not try it - clicking on a function name will take you to its online help page."
+  }
+]

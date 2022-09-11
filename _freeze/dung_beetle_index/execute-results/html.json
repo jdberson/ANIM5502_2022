@@ -1,0 +1,18 @@
+{
+  "hash": "a1029eb6ec586cfbd3427cef350fe3bb",
+  "result": {
+    "markdown": "---\ntitle: \"Dung beetles\"\n---\n\n\nThis website shows the data analyses that could be used for the ANIM5502 dung beetle group project.\n\nCode from each section can be copied using the clipboard symbol on the right of each 'code block' (the grey boxes). Try this below - copy the code into RStudio.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nprint(\"Success - too easy to copy and paste code\")\n```\n:::\n\n\nYou can also download all the R code on the website by navigating to the website source code on github.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\r\n<script src=\"site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\r\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

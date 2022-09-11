@@ -1,0 +1,17 @@
+---
+title: "Welcome"
+editor: visual
+---
+
+## How to use this site
+
+This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.
+
+Code from each section can be copied using the clipboard symbol on the right of each 'code block' (the grey boxes). You can try this below.
+
+```{r}
+#| output: false
+print("Success - too easy to copy and paste code")
+```
+
+Also, did you happen to hover over 'print' in the above code? If not try it - clicking on a function name will take you to its online help page.
