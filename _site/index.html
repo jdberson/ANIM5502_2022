@@ -193,6 +193,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
 <li><a href="#how-to-use-this-site" id="toc-how-to-use-this-site" class="nav-link active" data-scroll-target="#how-to-use-this-site">How to use this site</a></li>
+  <li>
+<a href="#how-to-download-and-run-the-r-scripts-on-your-computer" id="toc-how-to-download-and-run-the-r-scripts-on-your-computer" class="nav-link" data-scroll-target="#how-to-download-and-run-the-r-scripts-on-your-computer">How to download and run the R scripts on your computer</a>
+  <ul class="collapse">
+<li><a href="#using-renv" id="toc-using-renv" class="nav-link" data-scroll-target="#using-renv">Using renv</a></li>
+  <li><a href="#using-system-packages" id="toc-using-system-packages" class="nav-link" data-scroll-target="#using-system-packages">Using system packages</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jdberson/ANIM5502_2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -209,17 +216,126 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><section id="how-to-use-this-site" class="level2"><h2 class="anchored" data-anchor-id="how-to-use-this-site">How to use this site</h2>
-<p>This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.</p>
-<p>Code from each section can be copied using the clipboard symbol on the right of each ‘code block’ (the grey boxes). You can try this below.</p>
+</header><p>This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.</p>
+<p><strong>Important!</strong></p>
+<p>ANIM5502 is not a coding nor a data analysis course - you have the <em>Big Data</em> course for those!</p>
+<p>The purpose of this website is to provide all the code necessary for running your analyses for the ANIM5502 group project. If you find useful coding tips here then that is great, however, the main thing is to see how we use code/data analyses to answer <strong>interesting biological questions</strong>.</p>
+<p>So explore the site, use it to help with your data analyses, but don’t get bogged down in the code!</p>
+<section id="how-to-use-this-site" class="level2"><h2 class="anchored" data-anchor-id="how-to-use-this-site">How to use this site</h2>
+<p>Use the menu on the left to navigate the site.</p>
+<p>Code from each section can be copied using the clipboard symbol on the right of each ‘code block’ (the grey boxes). Function help pages can be accessed by clicking on a function name. You can try this below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"Success - too easy to copy and paste code"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Also, did you happen to hover over ‘print’ in the above code? If not, try it - clicking on a function name will take you to its online help page.</p>
-<p>Use the menu on the left to navigate the site.</p>
+</section><section id="how-to-download-and-run-the-r-scripts-on-your-computer" class="level2"><h2 class="anchored" data-anchor-id="how-to-download-and-run-the-r-scripts-on-your-computer">How to download and run the R scripts on your computer</h2>
+<p>To download the R scripts used on this website and run these locally there are two ways.</p>
+<ol type="1">
+<li>Using the <a href="https://rstudio.github.io/renv/articles/renv.html">renv</a> R Package to create a project specific library so that all packages are the same version as used here.</li>
+<li>Using your system R library. This is a little simpler to set-up but results may differ slightly.</li>
+</ol>
+<section id="using-renv" class="level3"><h3 class="anchored" data-anchor-id="using-renv">Using renv</h3>
+<p>First open RStudio and run the following code:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"renv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then follow these steps:</p>
+<ul>
+<li><p>Select the <strong>File</strong> menu followed by <strong>New Project</strong></p></li>
+<li><p>Choose <strong>New Directory</strong> and then <strong>New Project</strong></p></li>
+<li><p>Give the directory a name, for example, <strong>ANIM5502_2022_local</strong>, choose where to save the folder by selecting <strong>Browse</strong>, check the boxes next to <strong>Use renv with this project</strong> as well as <strong>Open in new session</strong>. Select <strong>Create Project</strong>.</p></li>
+<li><p>In the newly opened RStudio session, open a new R script (<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R Script</strong>), copy and paste the below R code and then select the <strong>Source</strong> button in the top right. When prompted to update libraries, choose yes.</p></li>
+<li><p>Work through the downloaded .R files as you would any R scripts.</p></li>
+<li>
+<p>Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project’s “data” folder.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Download R scripts ------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_cleaning.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_cleaning.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_exploration.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_exploration.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_modelling.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_modelling.R"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Download data -----------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># Create a data folder </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Download Excel file</span></span>
+<span><span class="co"># The dung_beetles_data_cleaning.R script requires the Excel file to run.</span></span>
+<span><span class="co"># Download this from the SharePoint site and save in the "data" file of</span></span>
+<span><span class="co"># this project. However, it is not needed for the data exploration and </span></span>
+<span><span class="co"># modelling parts so you can skip this step.</span></span>
+<span></span>
+<span><span class="co"># Download the prepared .csv file</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/data/db_data.csv"</span>,</span>
+<span>              <span class="st">"data/db_data.csv"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Install packages --------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># This file tells R the packages and package versions to install</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="st">"renv.lock"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/renv.lock"</span>,</span>
+<span>              <span class="st">"renv.lock"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install required packages - can take a little time</span></span>
+<span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/restore.html">restore</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul></section><section id="using-system-packages" class="level3"><h3 class="anchored" data-anchor-id="using-system-packages">Using system packages</h3>
+<p>Open RStudio and then follow these steps:</p>
+<ul>
+<li><p>Select the <strong>File</strong> menu followed by <strong>New Project</strong></p></li>
+<li><p>Choose <strong>New Directory</strong> and then <strong>New Project</strong></p></li>
+<li><p>Give the directory a name, for example, <strong>ANIM5502_2022_local</strong>, choose where to save the folder by selecting <strong>Browse</strong>, check the box next to <strong>Open in new session</strong>. Select <strong>Create Project</strong>.</p></li>
+<li><p>In the newly opened RStudio session, open a new R script (<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R Script</strong>), copy and paste the belowR code and then select the <strong>Source</strong> button in the top right.</p></li>
+<li><p>Work through the downloaded .R files as you would any R scripts.</p></li>
+<li><p>Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project’s “data” folder.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Download R scripts ------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_cleaning.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_cleaning.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_exploration.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_exploration.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_modelling.R"</span>,</span>
+<span>              <span class="st">"dung_beetles_data_modelling.R"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Download data -----------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># Create a data folder </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Download Excel file</span></span>
+<span><span class="co"># The dung_beetles_data_cleaning.R script requires the Excel file to run.</span></span>
+<span><span class="co"># Download this from the SharePoint site and save in the "data" file of</span></span>
+<span><span class="co"># this project. However, it is not needed for the data exploration and </span></span>
+<span><span class="co"># modelling parts so you can skip this step.</span></span>
+<span></span>
+<span><span class="co"># Download the prepared .csv file</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/data/db_data.csv"</span>,</span>
+<span>              <span class="st">"data/db_data.csv"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Install packages --------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"readxl"</span>, <span class="st">"janitor"</span>, <span class="st">"GGally"</span>, <span class="st">"broom"</span>, <span class="st">"emmeans"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

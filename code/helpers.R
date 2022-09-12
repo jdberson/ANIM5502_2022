@@ -13,3 +13,6 @@ knitr::purl("dung_beetles/dung_beetles_data_exploration.qmd",
             output = "code/dung_beetles_data_exploration.R", documentation = 2)
 knitr::purl("dung_beetles/dung_beetles_data_modelling.qmd", 
             output = "code/dung_beetles_data_modelling.R", documentation = 2)
+
+# renv snapshot
+renv::snapshot()

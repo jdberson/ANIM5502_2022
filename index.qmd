@@ -3,17 +3,153 @@ title: "Welcome"
 editor: visual
 ---
 
-## How to use this site
-
 This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.
 
-Code from each section can be copied using the clipboard symbol on the right of each 'code block' (the grey boxes). You can try this below.
+**Important!**
+
+ANIM5502 is not a coding nor a data analysis course - you have the *Big Data* course for those!
+
+The purpose of this website is to provide all the code necessary for running your analyses for the ANIM5502 group project. If you find useful coding tips here then that is great, however, the main thing is to see how we use code/data analyses to answer **interesting biological questions**.
+
+So explore the site, use it to help with your data analyses, but don't get bogged down in the code!
+
+## How to use this site
+
+Use the menu on the left to navigate the site.
+
+Code from each section can be copied using the clipboard symbol on the right of each 'code block' (the grey boxes). Function help pages can be accessed by clicking on a function name. You can try this below.
 
 ```{r}
 #| output: false
 print("Success - too easy to copy and paste code")
 ```
 
-Also, did you happen to hover over 'print' in the above code? If not, try it - clicking on a function name will take you to its online help page.
+## How to download and run the R scripts on your computer
 
-Use the menu on the left to navigate the site. 
+To download the R scripts used on this website and run these locally there are two ways.
+
+1.  Using the [renv](https://rstudio.github.io/renv/articles/renv.html) R Package to create a project specific library so that all packages are the same version as used here.
+2.  Using your system R library. This is a little simpler to set-up but results may differ slightly.
+
+### Using renv
+
+First open RStudio and run the following code:
+
+```{r}
+#| eval: false
+
+install.packages("renv")
+```
+
+Then follow these steps:
+
+-   Select the **File** menu followed by **New Project**
+
+-   Choose **New Directory** and then **New Project**
+
+-   Give the directory a name, for example, **ANIM5502_2022_local**, choose where to save the folder by selecting **Browse**, check the boxes next to **Use renv with this project** as well as **Open in new session**. Select **Create Project**.
+
+-   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the below R code and then select the **Source** button in the top right. When prompted to update libraries, choose yes.
+
+-   Work through the downloaded .R files as you would any R scripts.
+
+-   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project's "data" folder.
+
+    ```{r}
+    #| eval: false
+
+    # Download R scripts ------------------------------------------------------
+
+    download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_cleaning.R",
+                  "dung_beetles_data_cleaning.R")
+
+    download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_exploration.R",
+                  "dung_beetles_data_exploration.R")
+
+    download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_modelling.R",
+                  "dung_beetles_data_modelling.R")
+
+
+
+    # Download data -----------------------------------------------------------
+
+    # Create a data folder 
+    dir.create("data")
+
+    # Download Excel file
+    # The dung_beetles_data_cleaning.R script requires the Excel file to run.
+    # Download this from the SharePoint site and save in the "data" file of
+    # this project. However, it is not needed for the data exploration and 
+    # modelling parts so you can skip this step.
+
+    # Download the prepared .csv file
+    download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/data/db_data.csv",
+                  "data/db_data.csv")
+
+
+    # Install packages --------------------------------------------------------
+
+    # This file tells R the packages and package versions to install
+    file.remove("renv.lock")
+    download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/renv.lock",
+                  "renv.lock")
+
+    # Install required packages - can take a little time
+    renv::restore()
+    ```
+
+### Using system packages
+
+Open RStudio and then follow these steps:
+
+-   Select the **File** menu followed by **New Project**
+
+-   Choose **New Directory** and then **New Project**
+
+-   Give the directory a name, for example, **ANIM5502_2022_local**, choose where to save the folder by selecting **Browse**, check the box next to **Open in new session**. Select **Create Project**.
+
+-   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the belowR code and then select the **Source** button in the top right.
+
+-   Work through the downloaded .R files as you would any R scripts.
+
+-   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project's "data" folder.
+
+```{r}
+#| eval: false
+
+# Download R scripts ------------------------------------------------------
+
+download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_cleaning.R",
+              "dung_beetles_data_cleaning.R")
+
+download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_exploration.R",
+              "dung_beetles_data_exploration.R")
+
+download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/dung_beetles_data_modelling.R",
+              "dung_beetles_data_modelling.R")
+
+
+
+# Download data -----------------------------------------------------------
+
+# Create a data folder 
+dir.create("data")
+
+# Download Excel file
+# The dung_beetles_data_cleaning.R script requires the Excel file to run.
+# Download this from the SharePoint site and save in the "data" file of
+# this project. However, it is not needed for the data exploration and 
+# modelling parts so you can skip this step.
+
+# Download the prepared .csv file
+download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/data/db_data.csv",
+              "data/db_data.csv")
+
+
+# Install packages --------------------------------------------------------
+
+pkgs <- c("tidyverse", "readxl", "janitor", "GGally", "broom", "emmeans")
+install.packages(pkgs)
+
+
+```
