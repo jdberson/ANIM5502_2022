@@ -26,12 +26,12 @@ print("Success - too easy to copy and paste code")
 
 ## How to download and run the R scripts on your computer
 
-To download the R scripts used on this website and run these locally there are two ways.
+If you are not a git/github user, there are two ways to download the R scripts used on this website and run these locally:
 
 1.  Using the [renv](https://rstudio.github.io/renv/articles/renv.html) R Package to create a project specific library so that all packages are the same version as used here.
 2.  Using your system R library. This is a little simpler to set-up but results may differ slightly.
 
-### Using renv
+### 1. Using renv
 
 First open RStudio and run the following code:
 
@@ -49,11 +49,13 @@ Then follow these steps:
 
 -   Give the directory a name, for example, **ANIM5502_2022_local**, choose where to save the folder by selecting **Browse**, check the boxes next to **Use renv with this project** as well as **Open in new session**. Select **Create Project**.
 
--   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the below R code and then select the **Source** button in the top right. When prompted to update libraries, choose yes.
+-   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the below R code and then select the **Source** button in the top right. When prompted to update packages, choose yes.
 
--   Work through the downloaded .R files as you would any R scripts.
+-   You should see three .R files downloaded into the project folder (look at the **Files pane** in RStudio). The names of these files match to the pages on this website, except they each start with "dung beetles" and have underscores in place of spaces.
 
--   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project's "data" folder.
+-   Work through these downloaded .R files as you would any R scripts.
+
+-   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the Excel file from the SharePoint in the project's "data" folder. The other two .R scripts do not need this Excel file.
 
     ```{r}
     #| eval: false
@@ -98,7 +100,7 @@ Then follow these steps:
     renv::restore()
     ```
 
-### Using system packages
+### Without using renv
 
 Open RStudio and then follow these steps:
 
@@ -108,11 +110,13 @@ Open RStudio and then follow these steps:
 
 -   Give the directory a name, for example, **ANIM5502_2022_local**, choose where to save the folder by selecting **Browse**, check the box next to **Open in new session**. Select **Create Project**.
 
--   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the belowR code and then select the **Source** button in the top right.
+-   In the newly opened RStudio session, open a new R script (**File** --\> **New File** --\> **R Script**), copy and paste the below R code and then select the **Source** button in the top right.
 
--   Work through the downloaded .R files as you would any R scripts.
+-   You should see three .R files downloaded into the project folder (look at the **Files pane** in RStudio). The names of these files match to the pages on this website, except they each start with "dung beetles" and have underscores in place of spaces.
 
--   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the excel file from the SharePoint in the project's "data" folder.
+-   Work through these downloaded .R files as you would any R scripts.
+
+-   Note: if you want to run the dung_beetles_data_cleaning.R script you will need to save the Excel file from the SharePoint in the project's "data" folder. The other two .R scripts do not need this Excel file.
 
 ```{r}
 #| eval: false
