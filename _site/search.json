@@ -88,6 +88,6 @@
     "href": "index.html",
     "title": "Welcome",
     "section": "",
-    "text": "This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.\nCode from each section can be copied using the clipboard symbol on the right of each ‘code block’ (the grey boxes). You can try this below.\n\nprint(\"Success - too easy to copy and paste code\")\n\nAlso, did you happen to hover over ‘print’ in the above code? If not try it - clicking on a function name will take you to its online help page."
+    "text": "This site contains R code and some explanatory text to help with completing the data analyses for ANIM5502 in 2022.\nCode from each section can be copied using the clipboard symbol on the right of each ‘code block’ (the grey boxes). You can try this below.\n\nprint(\"Success - too easy to copy and paste code\")\n\nAlso, did you happen to hover over ‘print’ in the above code? If not, try it - clicking on a function name will take you to its online help page.\nUse the menu on the left to navigate the site."
   }
 ]
