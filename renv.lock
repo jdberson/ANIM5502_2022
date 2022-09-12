@@ -1194,25 +1194,14 @@
     },
     "stringr": {
       "Package": "stringr",
-      "Version": "1.4.0.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "stringr",
-      "RemoteUsername": "tidyverse",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "9b46754c481cac06ab1e337f76e9fd4794368f05",
-      "Hash": "42c703143c8dd844e53f75ff0a67a45a",
+      "Version": "1.4.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a66ad12140cd34d4f9dfcc19e84fc2a5",
       "Requirements": [
-        "cli",
-        "ellipsis",
         "glue",
-        "lifecycle",
         "magrittr",
-        "rlang",
-        "stringi",
-        "vctrs",
-        "withr"
+        "stringi"
       ]
     },
     "sys": {
