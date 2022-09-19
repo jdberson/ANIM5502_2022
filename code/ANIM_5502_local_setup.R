@@ -29,5 +29,6 @@ download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/dat
 
 # Install packages --------------------------------------------------------
 
-pkgs <- c("tidyverse", "readxl", "janitor", "GGally", "broom", "emmeans")
+pkgs <- c("tidyverse", "readxl", "janitor", "GGally", "broom", "broom.mixed", 
+          "emmeans", "lme4", "car")
 install.packages(pkgs)
