@@ -6,7 +6,7 @@
 #' 
 #' First we need to load the packages we well be using.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 library("tidyverse")
 library("readxl")
 library("janitor")
@@ -18,7 +18,7 @@ library("janitor")
 #' 
 #' Now we are ready to import the data to R and clean it up!
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 db_data <- 
   
   # Use the readxl package to load the data directly from Excel
@@ -78,7 +78,16 @@ db_data <-
   select(-c(species_data, sex_data)) %>%
   
   # Change the treatment assignment of generation 0 beetles to 'P' for parental.
-  mutate(treatment = if_else(generation == 0, "P", treatment))
+  mutate(treatment = if_else(generation == 0, "P", treatment)) %>%
+  
+  # Include sphericity measure
+  mutate(sphericity = (body_depth^2 / (body_length * elytra_width))^(1/3), 
+         .after = head_horn) %>%
+  
+  # Some head horns have been reported in uM instead of mm - change those here
+  mutate(head_horn = if_else(head_horn > 20, head_horn/1000, head_horn))
+
+
 
 
 
@@ -91,7 +100,7 @@ db_data <-
 #' 
 #' Let's save the clean data in a new file.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 
 write_csv(db_data, "data/db_data.csv")
 

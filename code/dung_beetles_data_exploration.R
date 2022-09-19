@@ -6,15 +6,16 @@
 #' 
 #' As before we need to load the packages we will use.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 library("tidyverse")
 library("GGally")
+
 
 
 #' 
 #' We will also set the ggplot theme for all plots.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 
 theme_set(theme_minimal())
 theme_update(strip.text = element_text(face = "bold", size=10, hjust=0), 
@@ -29,7 +30,7 @@ theme_update(strip.text = element_text(face = "bold", size=10, hjust=0),
 #' 
 #' Now let's load and inspect our clean data file.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 # Read in the data
 db_data <- read_csv("data/db_data.csv")
 
@@ -46,7 +47,7 @@ db_data
 #' 
 #' ## Sample size information
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 # Total individuals in each species/sex/generation/shipment/generation
 # combination
 total_n <- 
@@ -60,7 +61,7 @@ total_n
 #' 
 #' I find it difficult to get a quick overview of this information from a table. Plotting it in a figure can help.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 ggplot(data = total_n, aes(x = generation, y = n, colour = treatment, shape = sex)) +
   geom_point(position = position_dodge(0.3)) +
   geom_line(position = position_dodge(0.3)) +
@@ -70,7 +71,7 @@ ggplot(data = total_n, aes(x = generation, y = n, colour = treatment, shape = se
 #' 
 #' It's a little more convoluted to get the the sample sizes separately for each trait.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 
 # In total
 total_n_by_trait <- 
@@ -98,7 +99,7 @@ total_n_group_by_trait
 #' 
 #' Let's visualise the sample size by group for horns
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 ggplot(data = total_n_group_by_trait %>% drop_na(n_head_horn), 
        aes(x = generation, y = n_head_horn, colour = treatment, shape = sex)) +
   geom_point(position = position_dodge(0.3)) +
@@ -106,27 +107,26 @@ ggplot(data = total_n_group_by_trait %>% drop_na(n_head_horn),
   facet_wrap(~species*shipment)
 
 
-#' 
 #' ## Pairs plots
 #' 
 #' I often find it very useful to visualise the correlations among traits. This can be great for detecting outliers, and for getting a better understanding about the distribution of the data.
 #' 
 #' The following code will produce a series of pairs plots, separated by different groupings.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 # Highlight differences between the species
-ggpairs(db_data, columns = 8:14, aes(colour = species, alpha = 0.5))
+ggpairs(db_data, columns = 8:15, aes(colour = species, alpha = 0.5))
 
 # Highlight differences between the sexes
-ggpairs(db_data, columns = 8:14, aes(colour = sex, alpha = 0.5))
+ggpairs(db_data, columns = 8:15, aes(colour = sex, alpha = 0.5))
 
 # Look at vacca only
 ggpairs(db_data %>% filter(species == "Onthophagus vacca"), 
-        columns = 8:14, aes(colour = sex, alpha = 0.5))
+        columns = 8:15, aes(colour = sex, alpha = 0.5))
 
 # Look at andalusicus only
 ggpairs(db_data %>% filter(species == "Onthophagus andalusicus"), 
-        columns = 8:14, aes(colour = sex, alpha = 0.5))
+        columns = 8:15, aes(colour = sex, alpha = 0.5))
 
 
 #' 
@@ -138,7 +138,7 @@ ggpairs(db_data %>% filter(species == "Onthophagus andalusicus"),
 #' 
 #' For example, we are interested in how body size (pronotum width) was affected by the beetles being within/out of quarantine, and how this may have changed over the generations.
 #' 
-## -------------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------------------
 ggplot(data = db_data, aes(x = generation, y = pronotum_width, colour = treatment, shape = sex)) +
   geom_jitter() +
   facet_wrap(~species*shipment)
@@ -147,5 +147,35 @@ ggplot(data = db_data, aes(x = generation, y = pronotum_width, colour = treatmen
 
 #' 
 #' Think about what this figure is showing us. Does each 'shipment' show a similar or different pattern? Can we test for a treatment effect over the generations using all shipments?
+#' 
+#' Pronotum width is a proxy for beetle size. How about beetle shape? We can use our sphericity variable to describe beetle shape.
+#' 
+## ------------------------------------------------------------------------------------------------------
+ggplot(data = db_data, aes(x = generation, y = sphericity, colour = treatment, shape = sex)) +
+  geom_jitter() +
+  facet_wrap(~species*shipment)
+
+#' 
+#' Finally, we have one trait that is likely under sexual selection - head horns. Let's take a look at the relationship between body size (pronotum width) and horn size for the different species/shipments, then let's split that by generation.
+#' 
+## ------------------------------------------------------------------------------------------------------
+# Buy species/shipment combination
+ggplot(data = db_data, aes(x = pronotum_width, y = head_horn, colour = treatment)) +
+  geom_point() +
+  facet_wrap(~species*shipment)
+
+# By species/shipment/generation combination
+ggplot(data = db_data, aes(x = pronotum_width, y = head_horn, colour = treatment)) +
+  geom_point() +
+  facet_wrap(~species*shipment*generation)
+
+#' 
+#' Before we proceed we will want to go back and look at some of the outliers showing in the plots.
+#' 
+#' For example, we should check:
+#' 
+#' -   id = 01_M\_06, head_photo_id = 01_M\_04: head_horn appears too small for body size
+#' 
+#' -   id = 09_M\_255, head_photo_id = 9_M\_04: head_horn appears too big for body size
 #' 
 #' Now that we've gotten more familiar with our data - let's get modelling!
