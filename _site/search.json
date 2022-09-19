@@ -95,7 +95,7 @@
     "href": "dung_beetles/dung_beetles_index.html",
     "title": "Dung beetles",
     "section": "",
-    "text": "Check through the pages carefully, run the analyses yourself, and come to the next meeting ready with questions!\nNote the figures and tables are generally in a rough and raw state. This reflects the iterative way I tend to work - produce a table/figure using (mostly) default settings and then improve it from there. I’m happy to chat about what needs to be done to improve presentation but I will leave it to each individual to produce their final results.\nYou will see that I’ve structured the data analysis in three parts - data cleaning, data exploration and data modelling. I’ve used pronotum width and a couple of hypotheses as examples that can be extended / modified."
+    "text": "Check through the pages carefully, run the analyses yourself, and come to the next meeting ready with questions!\nNote the figures have now been tidied up but tables are generally in a rough and raw state. Use the papers you are reading as a guide to how to present results in tables and within the body of the text.\nYou will see that I’ve structured the data analysis in three parts - data cleaning, data exploration and data modelling. I’ve used pronotum width and a couple of hypotheses as examples that can be extended / modified."
   },
   {
     "objectID": "index.html",
