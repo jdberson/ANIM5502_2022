@@ -50,6 +50,6 @@ Note: it will not download the Excel file that is needed to run the data_cleanin
 download.file("https://raw.githubusercontent.com/jdberson/ANIM5502_2022/main/code/ANIM_5502_local_setup.R",
               "ANIM_5502_local_setup.R")
 
-source(ANIM_5502_local_setup.R)
+source("ANIM_5502_local_setup.R")
 
 ```
