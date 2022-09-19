@@ -40,7 +40,9 @@ Open RStudio and then follow these steps:
 
 ### Then run the following code whilst in the opened project
 
-Running this code will download all the R scrips as well as the prepared data.
+**Warning**
+
+Running the following code will download all the R scripts as well as the prepared data. Do not run the code if you don't want this to happen!
 
 Note: it will not download the Excel file that is needed to run the data_cleaning code.
 
