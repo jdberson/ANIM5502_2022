@@ -510,7 +510,6 @@ id,group_id,species,shipment,generation,treatment,sex,pronotum_width,pronotum_le
 01_M_03,01_M,Onthophagus vacca,5A,0,P,M,6.11,3.75,4.78,6.26,10.74,4.49,2.14,0.6693265038994656,01_M_01,E1_8,Shriya,NA,NA,19
 01_M_04,01_M,Onthophagus vacca,5A,0,P,M,4.68,3.3,3.96,4.86,9.16,3.42,1.02,0.6404818438942339,01_M_02,E1_9,Shriya,NA,NA,19
 01_M_05,01_M,Onthophagus vacca,5A,0,P,M,5.34,3.18,4.51,5.68,9.93,4.06,2.42,0.663618005578022,01_M_03,E1_10,Shriya,NA,NA,19
-01_M_06,01_M,Onthophagus vacca,5A,0,P,M,5.95,3.67,4.09,5.26,8.35,3.65,0.83,0.6718997865025806,01_M_04,F1_1,Shriya,NA,NA,19
 01_M_07,01_M,Onthophagus vacca,5A,0,P,M,5.24,3.35,4.29,5.43,9.36,4,2.27,0.6802701814486196,01_M_05,F1_2,Shriya,NA,NA,19
 01_M_08,01_M,Onthophagus vacca,5A,0,P,M,5.34,3.2,5.02,5.7,9.7,4.28,2.415,0.6919589261591,01_M_06,F1_3,Shriya,NA,NA,19
 01_M_09,01_M,Onthophagus vacca,5A,0,P,M,5.09,3.85,4.4,5.35,8.91,3.83,1.92,0.6751319907759229,01_M_07,F1_4,Shriya,NA,NA,19
@@ -779,17 +778,17 @@ id,group_id,species,shipment,generation,treatment,sex,pronotum_width,pronotum_le
 26_F_13,26_F,Onthophagus vacca,2,3,Q,F,5.34,3.71,3.93,5.65,10.8,4.67,NA,0.7096657612138084,NA,B4_7,Shriya,NA,NA,15
 26_F_14,26_F,Onthophagus vacca,2,3,Q,F,5.23,3.69,5.18,5.63,10.06,4.39,NA,0.6981373743350294,NA,B4_8,Shriya,NA,NA,15
 26_F_15,26_F,Onthophagus vacca,2,3,Q,F,5.17,3.65,4.75,5.48,9.35,4.2,NA,0.7008667717601533,NA,B4_9,Shriya,NA,Broken in vial,15
-08_M_01,08_M,Onthophagus vacca,4,2,Q,M,5.05,3.49,4.82,5.27,9.2,4.29,NA,0.7240558174982267,NA,B4_10,Shriya,NA,Broken in vial,15
-08_M_02,08_M,Onthophagus vacca,4,2,Q,M,4.82,3.09,4.21,5.02,8.76,3.76,NA,0.6850505544798603,NA,C4_1,Shriya,NA,NA,15
-08_M_03,08_M,Onthophagus vacca,4,2,Q,M,4.26,3.22,4.57,4.97,9.06,3.2,NA,0.6103867863022222,NA,C4_2,Shriya,NA,NA,15
-08_M_04,08_M,Onthophagus vacca,4,2,Q,M,5.05,3.22,4.24,5.13,9.74,3.78,NA,0.6588235161675172,NA,C4_3,Shriya,NA,NA,15
-08_M_05,08_M,Onthophagus vacca,4,2,Q,M,4.47,3.68,3.81,4.95,8.29,3.36,NA,0.6503886320760167,NA,C4_4,Shriya,NA,NA,15
-08_M_06,08_M,Onthophagus vacca,4,2,Q,M,4.82,3.51,5.34,5.09,8.83,3.39,NA,0.6347075097334914,NA,C4_5,Shriya,NA,body destroyed while measuring,15
-08_M_07,08_M,Onthophagus vacca,4,2,Q,M,4.73,3.34,4.08,4.97,8.87,3.5,NA,0.6525573616030513,NA,C4_6,Shriya,NA,NA,15
-08_M_08,08_M,Onthophagus vacca,4,2,Q,M,4.75,3.37,4.61,4.9,8.93,3.68,NA,0.676419365661037,NA,C4_7,Shriya,NA,NA,15
-08_M_09,08_M,Onthophagus vacca,4,2,Q,M,4.58,3.17,4.22,4.89,8.74,3.35,NA,0.640358395011489,NA,C4_8,Shriya,NA,NA,15
+08_M_01,08_M,Onthophagus vacca,4,2,Q,F,5.05,3.49,4.82,5.27,9.2,4.29,NA,0.7240558174982267,08_M_01,B4_10,Shriya,NA,Broken in vial,15
+08_M_02,08_M,Onthophagus vacca,4,2,Q,M,4.82,3.09,4.21,5.02,8.76,3.76,1.2349999999999999,0.6850505544798603,08_M_03,C4_1,Shriya,NA,NA,15
+08_M_03,08_M,Onthophagus vacca,4,2,Q,M,4.26,3.22,4.57,4.97,9.06,3.2,0.945,0.6103867863022222,08_M_04,C4_2,Shriya,NA,NA,15
+08_M_04,08_M,Onthophagus vacca,4,2,Q,M,5.05,3.22,4.24,5.13,9.74,3.78,1.57,0.6588235161675172,08_M_05,C4_3,Shriya,NA,NA,15
+08_M_05,08_M,Onthophagus vacca,4,2,Q,M,4.47,3.68,3.81,4.95,8.29,3.36,0.62,0.6503886320760167,08_M_06,C4_4,Shriya,NA,NA,15
+08_M_06,08_M,Onthophagus vacca,4,2,Q,M,4.82,3.51,5.34,5.09,8.83,3.39,0.85,0.6347075097334914,08_M_07,C4_5,Shriya,NA,body destroyed while measuring,15
+08_M_07,08_M,Onthophagus vacca,4,2,Q,M,4.73,3.34,4.08,4.97,8.87,3.5,0.7150000000000001,0.6525573616030513,08_M_08,C4_6,Shriya,NA,NA,15
+08_M_08,08_M,Onthophagus vacca,4,2,Q,M,4.75,3.37,4.61,4.9,8.93,3.68,0.87,0.676419365661037,08_M_09,C4_7,Shriya,NA,NA,15
+08_M_09,08_M,Onthophagus vacca,4,2,Q,M,4.58,3.17,4.22,4.89,8.74,3.35,0.7,0.640358395011489,08_M_10,C4_8,Shriya,NA,NA,15
 08_M_10,08_M,Onthophagus vacca,4,2,Q,M,4.99,3.58,5.1,5.06,10.1,3.81,NA,0.6573439753379929,NA,C4_9,Shriya,NA,Broken in vial,15
-08_M_11,08_M,Onthophagus vacca,4,2,Q,M,4.7,3.81,5.05,5.06,9.17,3.88,NA,0.6871441701631488,NA,C4_10,Shriya,NA,body destroyed while measuring,15
+08_M_11,08_M,Onthophagus vacca,4,2,Q,M,4.7,3.81,5.05,5.06,9.17,3.88,0.89,0.6871441701631488,08_M_11,C4_10,Shriya,NA,body destroyed while measuring,15
 08_M_12,08_M,Onthophagus vacca,4,2,Q,M,4.61,3.18,4.04,4.82,9.03,3.74,NA,0.6849667211157525,NA,D4_1,Shriya,NA,NA,15
 08_M_13,08_M,Onthophagus vacca,4,2,Q,M,4.86,3.4,4.18,5.24,8.86,3.7,NA,0.6655992334013727,NA,D4_2,Shriya,NA,NA,15
 08_M_14,08_M,Onthophagus vacca,4,2,Q,M,4.79,3.31,4.02,5,8.02,3.59,NA,0.6849857048493626,NA,D4_3,Shriya,NA,NA,15
@@ -1058,7 +1057,6 @@ id,group_id,species,shipment,generation,treatment,sex,pronotum_width,pronotum_le
 09_M_252,09_M,Onthophagus vacca,4,3,Q,M,5.09,3.38,3.79,5.27,10.26,3.8,1.82,0.6439760843882685,9_M_01,F2,Varthini,NA,NA,20
 09_M_253,09_M,Onthophagus vacca,4,3,Q,M,5.41,3.27,3.85,5.55,9.99,3.97,2.365,0.6575177995921958,9_M_02,F3,Varthini,NA,NA,20
 09_M_254,09_M,Onthophagus vacca,4,3,Q,M,5.25,3.33,3.81,5.44,9.68,4.38,2.035,0.7142079081627273,9_M_03,F4,Varthini,MUD,MUD,20
-09_M_255,09_M,Onthophagus vacca,4,3,Q,M,4.33,3.31,4.16,5.41,9.75,4.1,2.355,0.683054375290401,9_M_04,F5,Varthini,NA,NA,20
 09_M_256,09_M,Onthophagus vacca,4,3,Q,M,5.4,3.18,3.57,5.69,9.49,4.08,2.785,0.6755341092919321,9_M_05,F6,Varthini,NA,NA,20
 09_M_257,09_M,Onthophagus vacca,4,3,Q,M,5.28,3.58,3.78,5.35,9.43,3.71,2.21,0.6485758619379979,9_M_06,F7,Varthini,NA,NA,20
 09_M_258,09_M,Onthophagus vacca,4,3,Q,M,5.41,3.15,3.79,5.61,11.24,4.42,2.185,0.6766620010711156,9_M_07,F8,Varthini,NA,NA,20
@@ -1351,3 +1349,5 @@ id,group_id,species,shipment,generation,treatment,sex,pronotum_width,pronotum_le
 13_F_15,13_F,Onthophagus vacca,4,4,CT,F,4.92,3.53,5.62,5.45,NA,3.95,NA,NA,NA,E7,Meggan,NA,broken in vial,17
 13_F_16,13_F,Onthophagus vacca,4,4,CT,F,5.25,3.66,4.69,5.37,NA,3.85,NA,NA,NA,E8,Meggan,NA,broken in vial,17
 13_F_17,13_F,Onthophagus vacca,4,4,CT,F,5.32,3.51,4.46,5.48,NA,4.13,NA,NA,NA,E9,Meggan,NA,broken in vial,17
+01_M_06,01_M,Onthophagus vacca,5A,0,P,M,4.94,3.49,3.7,5.16,9.13,3.64,0.69,0.6551801976495022,01_M_04,F1_1,Shriya,NA,NA,19
+09_M_255,09_M,Onthophagus vacca,4,3,Q,M,5.29,3.24,4.2,5.49,9.75,4.1,2.29,0.6797203167128948,9_M_04,F5_3,Varthini,NA,NA,20

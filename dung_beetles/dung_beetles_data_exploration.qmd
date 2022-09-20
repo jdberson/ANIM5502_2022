@@ -203,10 +203,4 @@ ggplot(data = db_data, aes(x = pronotum_width, y = head_horn, colour = treatment
 
 Before we proceed we will want to go back and look at some of the outliers showing in the plots.
 
-For example, we should check:
-
--   id = 01_M\_06, head_photo_id = 01_M\_04: head_horn appears too small for body size
-
--   id = 09_M\_255, head_photo_id = 9_M\_04: head_horn appears too big for body size
-
 Now that we've gotten more familiar with our data - let's get modelling!

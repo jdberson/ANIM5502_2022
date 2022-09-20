@@ -33,7 +33,7 @@ db_data <-
   read_xlsx("data/CSIRO quarantine project data.xlsx", 
             sheet = "Group data", na = c("", "N/A", "NA")) %>%
   
-  # Use the janitor package to make the column headings more R friendly
+   # Use the janitor package to make the column headings more R friendly
   clean_names() %>%
   
   # Filter rows with all missing values
@@ -41,6 +41,12 @@ db_data <-
   
   # Change columns to numeric
   mutate(across(pronotum_length:head_horn, as.numeric)) %>%
+  
+  # Two individuals remeasured
+  filter(!id %in% c("01_M_06", "09_M_255")) %>%
+  
+  bind_rows(read_xlsx("data/CSIRO project_rpts.xlsx", 
+            sheet = "Sheet1") %>% clean_names()) %>%
   
   # Create a new group_id term for joining with vial info - note this is hacky!
   # Note the third line - this is necessary to add in the leading zeros where
@@ -93,9 +99,11 @@ db_data <-
          .after = head_horn) %>%
   
   # Some head horns have been reported in uM instead of mm - change those here
-  mutate(head_horn = if_else(head_horn > 20, head_horn/1000, head_horn))
-
-
+  mutate(head_horn = if_else(head_horn > 20, head_horn/1000, head_horn)) %>%
+  
+  # One individual found to have been assigned the incorrect sex - correct here
+  mutate(sex = if_else(id == "08_M_01", "F", sex),
+         head_horn = if_else(id == "08_M_01", NA_real_, head_horn))
 
 
 ```
