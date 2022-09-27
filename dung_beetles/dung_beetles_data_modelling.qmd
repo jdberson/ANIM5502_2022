@@ -1,7 +1,7 @@
 ---
 title: "Data modelling"
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Setup
@@ -80,7 +80,7 @@ db_data_F1 %>%
 
 ### Step 2: fit the model
 
-Here we fit the model that tests whether there is a treatment effect on pronotum width, if this differs by species (treatment*species term), if males and females differ in their pronotum width (sex term) and whether there were any differences among the different shipments (the (1|shipment) random effect term).
+Here we fit the model that tests whether there is a treatment effect on pronotum width, if this differs by species (treatment\*species term), if males and females differ in their pronotum width (sex term) and whether there were any differences among the different shipments (the (1\|shipment) random effect term).
 
 ```{r}
 
@@ -111,8 +111,7 @@ Now that we have fit our model and checked that the model assumptions look OK, w
 
 We will use the Anova function from the car package (notice the capital 'A') to test the statistical significance for each model term.
 
-**Important**
-There are lots of problems with *P* values and null hypothesis significance testing. These are important to be aware of but that is not the focus of this unit. We can discuss these during our next meeting.
+**Important** There are lots of problems with *P* values and null hypothesis significance testing. These are important to be aware of but that is not the focus of this unit. We can discuss these during our next meeting.
 
 ```{r}
 
@@ -141,7 +140,7 @@ We can see that for both species those beetles in the CT treatment tend to be sm
 
 ### Step 6: visualise model predictions alongside raw data
 
-So far this has been all very 'black box' -  we have run a model and got some results. We have some idea of what the model is telling us, but how well does the model reflect the raw data? It's also often much easier to communicate our results using a figure rather than just numbers in a table.
+So far this has been all very 'black box' - we have run a model and got some results. We have some idea of what the model is telling us, but how well does the model reflect the raw data? It's also often much easier to communicate our results using a figure rather than just numbers in a table.
 
 The following figure plots the the mean pronotum width for each species/treatment combination that is predicted by the model, the standard errors for these means, along with the raw data points.
 
@@ -244,16 +243,19 @@ ggplot(data = augment(m1_hh),
 
 ```
 
-
 ## Hypothesis #2
 
 Now let's investigate whether these effects persist across the generations.
 
 Recall that our most complete data is for *Onthophagus vacca* shipments 2 and 4 up to generation 3. Let's use just this data for this hypothesis for now.
 
-Recall that we didn't see an effect of the treatment on pronotum width for *O. vacca* in generation 1, but we did see an effect on head horns. 
+~~Recall that we didn't see an effect of the treatment on pronotum width for *O. vacca* in generation 1, but we did see an effect on head horns.~~
 
-So, here we'll focus just on head horns...
+~~So, here we'll focus just on head horns...~~
+
+Although we didn't see an effect of the treatment on pronotum width for *O. vacca* in generation 1, perhaps there is a delayed effect, or something else happening....let's explore this here, along with testing whether the effect on head horns persisted.
+
+First, **pronotum width**:
 
 ### Step 1: prepare the data
 
@@ -271,7 +273,7 @@ db_data_F1_4 <-
 
 # Check sample sizes
 db_data_F1_4 %>%
-  drop_na(head_horn) %>%
+  drop_na(pronotum_width) %>%
   group_by(treatment, generation, sex, shipment) %>%
   count() 
 
@@ -280,7 +282,100 @@ db_data_F1_4 %>%
 
 ### Step 2: fit the model
 
-By including an interaction between treatment and generation (treatment*generation in the model) we are asking if the treatment effect varies across generations.
+By including an interaction between treatment and generation (treatment\*generation in the model) we are asking if the treatment effect varies across generations.
+
+Note that because here we have only two shipments, we have moved 'shipment' from being a random to a fixed effect. This is a detail that is not important at this stage, but please ask about this if you wish to discuss.
+
+```{r}
+m2_pw <- lm(pronotum_width ~  + treatment*generation + shipment,
+            data = db_data_F1_4)
+
+# Alternative model to include the three-way interaction
+# m2_pw <- lm(pronotum_width ~  + treatment*generation*shipment,
+#             data = db_data_F1_4)
+
+```
+
+### Step 3: check model assumptions
+
+```{r}
+
+par(mfrow = c(2,2)); plot(m2_pw); par(mfrow = c(1,1))
+
+```
+
+### Step 4: look at model results
+
+```{r}
+anova(m2_pw)
+
+# We can look at overall fit using the glance() function. Note the adj.r.squared of 0.129. There is a lot of variation that our model is unable to explain.
+glance(m2_pw)
+```
+
+There is for a treatment by generation interaction (treatment:generation term in the anova output) so it seems that although we did not find a treatment effect in the first generation, there is something happening here\...
+
+### Step 5: understand the model results
+
+I don't find the following hugely helpful but I've left here to show how it's possible to look at the estimated marginal means when there is a continuous term in the model. See how the results are for generation '2.35', that is, we see treatment effect at the average generation:
+
+```{r}
+
+emmeans(m2_pw, ~ treatment | generation) %>%
+  contrast() %>% tidy()
+
+# Alternative when three-way interaction term included
+# emmeans(m2_pw, ~ treatment | generation, by = "shipment") %>%
+#   contrast() %>% tidy()
+
+```
+
+### Step 6: visualise model predictions alongside raw data
+
+The following figure shows the predicted pronotum width and how this changes with generation, along with the raw data, for each shipment.
+
+```{r}
+
+# Strip labels are a little tricky to format. The following function is used
+# in facet_wrap below to aid with the labelling.
+appender_ship <- function(string, prefix = "Shipment: ") paste0(prefix, string)
+
+# Produce figure:
+ggplot(data = augment(m2_pw, se_fit = TRUE), 
+       aes(x = generation, y = .fitted, colour = treatment)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = .fitted - .se.fit, ymax = .fitted + .se.fit), 
+              alpha = 0.2) +
+  geom_jitter(aes(x = generation, y = pronotum_width, colour = treatment), alpha = 0.2) +
+  labs(x = "Generation", y = "Pronotum width (mm)") +
+  guides(colour = guide_legend(title = "Treatment")) +
+  facet_wrap(~shipment, labeller = labeller(shipment = as_labeller(appender_ship)))
+
+
+```
+
+You can see that the 'CT' treatment beetles are predicted to increase in size more quickly across generations compared to the Q beetles.
+
+You can also see that the model is not a brilliant fit to the data. This could be because we have restricted the slopes of the lines to be the same for each shipment (i.e. we have not included the three-way interaction with shipment in the model). It could also be related to fitting a linear model to data that shows a non-linear pattern.
+
+Now for **head horns**...
+
+### Step 1: prepare the data
+
+Already done! But we can still check our sample size:
+
+```{r}
+# Check sample sizes
+db_data_F1_4 %>%
+  drop_na(head_horn) %>%
+  group_by(treatment, generation, sex, shipment) %>%
+  count() 
+
+```
+
+### Step 2: fit the model
+
+By including an interaction between treatment and generation (treatment\*generation in the model) we are asking if the treatment effect varies across generations.
 
 Note that because here we have only two shipments, we have moved 'shipment' from being a random to a fixed effect. This is a detail that is not important at this stage, but please ask about this if you wish to discuss.
 
@@ -299,9 +394,12 @@ par(mfrow = c(2,2)); plot(m2_hh); par(mfrow = c(1,1))
 
 ### Step 4: look at model results
 
+We have a high adjusted r squared term (0.804). This will be mostly due to pronotum width doing such a good job explaining head horn size. You can test this by running a model without pronotum width and compared the r squared results.
+
 ```{r}
 anova(m2_hh)
 
+glance(m2_hh)
 ```
 
 There is no evidence for a treatment by generation interaction (treatment:generation term in the anova output), but there is an effect of treatment. This suggests that there is a treatment effect (consistent with our earlier finding) and that this persists through time.
@@ -309,6 +407,8 @@ There is no evidence for a treatment by generation interaction (treatment:genera
 It could also mean that we lacked the power necessary to detect the interaction effect....
 
 ### Step 5: understand the model results
+
+The same applies here as to my comments above about pronotum width.
 
 ```{r}
 
@@ -428,4 +528,3 @@ ggplot(data = db_data_vac_CT, aes(x = pronotum_width, y = head_horn, colour = ge
 ```
 
 You can see that as we increase generation (colours of the points), *O. vacca* males get larger horns but this is all down to them getting bigger!
-
